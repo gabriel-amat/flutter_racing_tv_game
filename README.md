@@ -76,47 +76,11 @@ graph TD
 
 ## 🚀 Como Executar
 
-### ⚡ Modo Rápido (Recomendado no Mac/Linux)
-
 O script `run.sh` automatiza a geração dos certificados SSL locais (necessários para o giroscópio no Safari iOS), a compilação do Flutter Web e a inicialização dos servidores:
 
 ```bash
 chmod +x run.sh
 ./run.sh
-```
-
----
-
-### 🛠️ Modo Manual (Passo a Passo)
-
-#### 1. Instalar Dependências
-```bash
-flutter pub get
-```
-
-#### 2. Compilar o Flutter Web
-```bash
-flutter build web --release
-```
-
-#### 3. Iniciar o Servidor Dart Local
-```bash
-dart run bin/server.dart
-```
-
-O terminal exibirá as instruções com seu IP local automaticamente:
-```
-╔════════════════════════════════════════════════════════════════════╗
-║                 🏁 RETRO RACING TV SERVER 🏁                       ║
-╠════════════════════════════════════════════════════════════════════╣
-║ 📺 NA SMART TV, acesse no navegador:                               ║
-║    👉 http://192.168.1.76:8080                                     ║
-║                                                                    ║
-║ 📱 NO IPHONE (SAFARI), acesse com HTTPS para o giroscópio:         ║
-║    👉 https://192.168.1.76:8443/?role=controller&room=RACE       ║
-║                                                                    ║
-║ 📱 Ou aponte a câmera do celular para o QR Code na tela da TV!     ║
-╚════════════════════════════════════════════════════════════════════╝
 ```
 
 ---
