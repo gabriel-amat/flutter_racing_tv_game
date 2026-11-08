@@ -137,6 +137,8 @@ retro_racing_tv/
 │   │   ├── phone_controller.dart     # Gerenciamento do volante e transmissão
 │   │   └── tv_game_controller.dart   # Gerenciamento da sessão TV e sincronização
 │   ├── core/
+│   │   ├── network/                  # Camada WebRTC DataChannel + Signaler WS
+│   │   │   └── webrtc_manager.dart
 │   │   └── platform/                 # Abstrações multi-plataforma seguras
 │   ├── game/
 │   │   ├── engine/
@@ -147,8 +149,6 @@ retro_racing_tv/
 │   │   └── track_builder.dart        # Construtor procedural da pista retrô
 │   ├── models/
 │   │   └── control_input.dart        # Modelo de dados de entrada do piloto
-│   ├── network/
-│   │   └── webrtc_manager.dart       # Camada WebRTC DataChannel + Signaler WS
 │   ├── screens/
 │   │   ├── phone_controller_screen.dart # View do Volante no Smartphone
 │   │   └── tv_game_screen.dart          # View do Jogo em Tela Cheia na TV

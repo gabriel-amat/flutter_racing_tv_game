@@ -1,8 +1,8 @@
 import 'dart:convert';
 import 'dart:js_interop';
 import 'package:web/web.dart' as web;
-import '../core/platform/platform_helper.dart';
-import '../models/control_input.dart';
+import '../platform/platform_helper.dart';
+import '../../models/control_input.dart';
 
 typedef OnInputCallback = void Function(ControlInput input, int latencyMs);
 typedef OnStatusCallback = void Function(String status);

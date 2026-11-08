@@ -1,8 +1,8 @@
 import 'dart:async';
 import 'package:flutter/foundation.dart';
 import 'motion_sensor_manager.dart';
+import '../core/network/webrtc_manager.dart';
 import '../models/control_input.dart';
-import '../network/webrtc_manager.dart';
 
 /// Presentation & Application controller managing the smartphone game controller,
 /// motion gyroscope sensors, and high-frequency WebRTC input stream (60 FPS).
