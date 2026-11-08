@@ -133,6 +133,7 @@ retro_racing_tv/
 │   └── server.dart                   # Servidor HTTP/HTTPS + WebSockets Signaler
 ├── lib/
 │   ├── controllers/                  # Controladores de Aplicação & Estado
+│   │   ├── motion_sensor_manager.dart # Leitura e filtro anti-jitter dos sensores
 │   │   ├── phone_controller.dart     # Gerenciamento do volante e transmissão
 │   │   └── tv_game_controller.dart   # Gerenciamento da sessão TV e sincronização
 │   ├── core/

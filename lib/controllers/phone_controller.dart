@@ -1,6 +1,6 @@
 import 'dart:async';
 import 'package:flutter/foundation.dart';
-import '../controller/motion_sensor_manager.dart';
+import 'motion_sensor_manager.dart';
 import '../models/control_input.dart';
 import '../network/webrtc_manager.dart';
 
