@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <!--
+    If you are serving your web app in a path other than the root, change the
+    href value below to reflect the base path you are serving from.
+
+    The path provided below has to start and end with a slash "/" in order for
+    it to work correctly.
+
+    For more details:
+    * https://developer.mozilla.org/en-US/docs/Web/HTML/Element/base
+
+    This is a placeholder for base href that will be replaced by the value of
+    the `--base-href` argument provided to `flutter build`.
+  -->
+  <base href="$FLUTTER_BASE_HREF">
+
+  <meta charset="UTF-8">
+  <meta content="IE=Edge" http-equiv="X-UA-Compatible">
+  <meta name="description" content="Retro Racing TV - 90s Arcade Racing Game with Phone Motion Controller">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+
+  <!-- iOS meta tags & icons -->
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="Retro Racing">
+  <link rel="apple-touch-icon" href="icons/Icon-192.png">
+
+  <!-- Favicon -->
+  <link rel="icon" type="image/png" href="favicon.png"/>
+
+  <title>Retro Racing TV - 90s Arcade</title>
+  <link rel="manifest" href="manifest.json">
+  <style>
+    html, body {
+      margin: 0;
+      padding: 0;
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+      background-color: #000000;
+      touch-action: none;
+      -webkit-touch-callout: none;
+      -webkit-user-select: none;
+      user-select: none;
+    }
+  </style>
+</head>
+<body>
+  <!--
+    You can customize the "flutter_bootstrap.js" script.
+    This is useful to provide a custom configuration to the Flutter loader
+    or to give the user feedback during the initialization process.
+
+    For more details:
+    * https://docs.flutter.dev/platform-integration/web/initialization
+  -->
+  <script>
+    window.safariSteering = 0.0;
+    window.smoothedSteering = 0.0;
+    window.rawAngle = 0.0;
+    window.zeroAngle = null;
+    window.gyroPermissionGranted = false;
+
+    // Cálculo vetorial da gravidade com filtro passa-baixa anti-tremedeira
+    function handleMotion(event) {
+      var g = event.accelerationIncludingGravity;
+      if (!g) return;
+
+      var gx = g.x || 0;
+      var gy = g.y || 0;
+
+      // atan2 no plano da tela (eixo Z perpendicular)
+      var rad = Math.atan2(gx, gy);
+      var deg = rad * (180.0 / Math.PI);
+
+      window.rawAngle = deg;
+
+      if (window.zeroAngle === null) {
+        window.zeroAngle = deg;
+      }
+
+      var diff = deg - window.zeroAngle;
+      while (diff > 180) diff -= 360;
+      while (diff < -180) diff += 360;
+
+      // DIREÇÃO CORRIGIDA:
+      // Virar para a direita (mão direita desce) -> vira para a direita (+1.0)
+      // Virar para a esquerda (mão esquerda desce) -> vira para a esquerda (-1.0)
+      var targetSteering = -diff / 24.0;
+
+      // Deadzone central para manter a reta cravada sem tremer
+      if (Math.abs(targetSteering) < 0.06) {
+        targetSteering = 0.0;
+      }
+
+      targetSteering = Math.max(-1.0, Math.min(1.0, targetSteering));
+
+      // Filtro Passa-Baixa (EMA): 80% do valor anterior + 20% do novo
+      // Isso elimina 100% do jitter e dá suavidade de volante profissional
+      window.smoothedSteering = (window.smoothedSteering * 0.78) + (targetSteering * 0.22);
+      window.safariSteering = Math.max(-1.0, Math.min(1.0, window.smoothedSteering));
+    }
+
+    window.calibrateZeroMotion = function() {
+      if (typeof window.rawAngle === 'number') {
+        window.zeroAngle = window.rawAngle;
+        window.smoothedSteering = 0.0;
+        window.safariSteering = 0.0;
+      }
+    };
+
+    window.requestSafariGyro = function() {
+      if (typeof DeviceOrientationEvent !== 'undefined' && typeof DeviceOrientationEvent.requestPermission === 'function') {
+        DeviceOrientationEvent.requestPermission()
+          .then(function(state) {
+            if (state === 'granted') {
+              window.gyroPermissionGranted = true;
+              window.addEventListener('devicemotion', handleMotion);
+            }
+          })
+          .catch(function(e) {
+            console.log('Permission err:', e);
+          });
+      } else {
+        window.gyroPermissionGranted = true;
+        window.addEventListener('devicemotion', handleMotion);
+      }
+    };
+
+    document.addEventListener('touchend', function() {
+      if (!window.gyroPermissionGranted) {
+        window.requestSafariGyro();
+      }
+    }, { once: false });
+  </script>
+  <script src="flutter_bootstrap.js" async></script>
+</body>
+</html>
