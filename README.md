@@ -72,14 +72,6 @@ graph TD
     PhoneCtrl -->|Lê inclinação| Sensors
 ```
 
-### Por que não deixar conexões no `initState` da View?
-Nas versões iniciais, os widgets `StatefulWidget` instanciavam conexões WebRTC, iniciavam timers de transmissão, calculavam colisões de tráfego e tocavam áudios direto no ciclo de vida da tela. 
-
-Na arquitetura atual:
-1. **As Views** são 100% declarativas, reativas e focadas exclusivamente em UI.
-2. **Os Controllers** (`TvGameController` e `PhoneController`) isolam o ciclo de vida da sessão e notificam a tela via `ListenableBuilder` / `AnimatedBuilder`.
-3. **O Motor de Jogo** (`RacingGameEngine`) é Dart puro, permitindo suítes completas de testes unitários sem dependência de browser ou renderização.
-
 ---
 
 ## 🚀 Como Executar
